@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { App, RecommendData, ListData } from '../DataStruct'
+import { App, AppData } from '../DataStruct'
 const urlTopN: string = '/mockdata/appListData.json'
 const urlTopGrossN: string = '/mockdata/recomendData.json'
 
@@ -24,23 +24,29 @@ export async function getTopN(start: number, limit: number): Promise<any> {
 
 const parseTopNData = (data: any, start: number, limit: number): App[] => {
     console.log('parseTopNData', data.feed.entry.length)
-    return data.feed.entry.slice(start, start + limit).map((item: RecommendData, i: number) => ({
-        rank     : start + i + 1,
-        icon     : item['im:image'][1].label,
-        name     : item['im:name'].label,
-        category : item.category.attributes.label,
-        star     : parseInt(Math.random() * 5 + 1 + '', 10),
-        comment  : parseInt(Math.random() * 1000 + 100 + '', 10)
-    }))
+    let targetData: AppData[] = data.feed.entry.slice(start, start + limit)
+    return targetData.map((item: AppData, i: number) => convertOne(item, start + i + 1))
 }
 
 const parseTopGrossNData = (data: any): App[] => {
     console.log('parseTopGrossNData', data.feed.entry.length)
-    return data.feed.entry.map((item: ListData) => ({
-        icon : item['im:image'][1].label,
-        name : item['im:name'].label,
-        category : item.category.attributes.label
-    }))
+    return data.feed.entry.map((item: AppData) => convertOne(item))
+}
+
+const convertOne = (item: AppData, rank?: number): App => {
+    let t: App = {
+        icon     : item['im:image'][1].label,
+        name     : item['im:name'].label,
+        category : item.category.attributes.label,
+        summary  : item.summary.label,
+        author   : item['im:artist'].label
+    }
+    if(rank) {
+        t.rank     = rank
+        t.star     = parseInt(Math.random() * 5 + 1 + '', 10)
+        t.comment  = parseInt(Math.random() * 1000 + 100 + '', 10)
+    }
+    return t
 }
 
 export async function getTopGrossingN(n: number): Promise<any> {

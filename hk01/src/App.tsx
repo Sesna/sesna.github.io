@@ -12,7 +12,6 @@ export default class App extends React.Component {
         this.handleKeyWordChange = this.handleKeyWordChange.bind(this)
     }
     handleKeyWordChange(value) {
-        console.log('handleKeyWordChange', value)
         this.setState({ keyWord : value })
     }
     render() {

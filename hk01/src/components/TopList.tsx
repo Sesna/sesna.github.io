@@ -28,8 +28,9 @@ function showStar(starNumber: number) {
     return t
 }
 
-function AppTop(props: App) {
-    return (<div className='app' key={props.name}>
+function AppTop(props: App, i: number) {
+    let cname = 'app' + (i % 2 === 1 ? " circle" : "")
+    return (<div className={cname}  key={props.name}>
         <div className='left'>{props.rank}</div>
         <div className='middle'>
             <div className='icon' style={imgStyle(props.icon)}></div>
@@ -46,7 +47,7 @@ function AppTop(props: App) {
 }
 
 function AppTopList(list: App[]) {
-    return list.map((item) => AppTop(item))
+    return list.map((item, i) => AppTop(item, i))
 }
 
 export default class TopList extends React.Component {

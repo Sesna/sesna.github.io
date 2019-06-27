@@ -6,8 +6,11 @@ export function imgStyle(url: string): { backgroundImage: string } {
     }
 }
 
+const matchKeys = ['name', 'summary', 'category', 'author']
 function matchAny(item: App, keyWord: string): boolean {
-    return (item.name + '').toUpperCase().indexOf(keyWord) !== -1
+    return matchKeys.some((key) => {
+        return (item[key] + '').toUpperCase().indexOf(keyWord) !== -1
+    })
 }
 
 export function fliterData(list: App[], keyWord: string): App[] {
