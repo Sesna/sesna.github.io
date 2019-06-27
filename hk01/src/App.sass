@@ -1,0 +1,133 @@
+$input_height: .26rem;
+$icon_size_big: .75rem;
+$icon_size_small: .60rem;
+#app
+    .search-box
+        position: relative;
+        height: 0.5rem;
+        line-height: $input_height;
+        font-size: 0.16rem;
+        text-align: center;
+        color: #985b5b;
+        .common-position
+            position: absolute;
+            left: 5%;
+            height: $input_height;
+            margin-top: .1rem;
+            border-radius: 0.05rem;
+            width: 90%;
+        .background
+            background-color: #e6e0e0;
+        .search
+            box-sizing: border-box;
+            padding: 0.03rem 0.1rem;
+            border: none;
+            background: transparent;
+            &:focus
+                outline: none;
+        .tip
+            font-size: 0.14rem;
+        .search-icon
+            $w: 0.16rem;
+            width: $w;
+            height: $w;
+            opacity: .5;
+            vertical-align: -0.03rem;
+    .content
+        position: relative;
+        height: calc(100% - 0.5rem);
+        overflow-y: auto;
+    .gross-list
+        border-top: 0.01rem solid #ccc;
+        padding : .1rem 0;
+        .title
+            font-size: .2rem;
+            margin: 0;
+            padding-left: .1rem;
+        .app-list
+            padding: .1rem 0;
+            white-space: nowrap;
+            overflow-x: scroll;
+            height: 1.5rem;
+        .app
+            display: inline-block;
+            vertical-align: top;
+            width: $icon_size_big;
+            word-break: break-all;
+            padding: 0 .1rem;
+            font-size: .14rem;
+        .icon
+            width: $icon_size_big;
+            height: $icon_size_big;
+            border-radius: .12rem;
+            background-size: cover;
+        .name
+            margin: .05rem 0;
+            height: .4rem;
+            line-height: .2rem;
+            overflow: hidden;
+            white-space: normal;
+        .category
+            margin: .05rem 0;
+            color: #d6a1a1;
+            height: .2rem;
+            line-height: .2rem;
+            white-space: normal;
+    .top-list
+        position: relative;
+        border-top: 0.01rem solid #ccc;
+        min-height: calc(100% - 2.4rem);
+        margin-bottom: .2rem;
+        .loading-circle
+            position: absolute;
+            left: 0;
+            top: 50%;
+            margin-top: -0.53rem;
+        .app
+            padding: .08rem 0;
+            border-bottom: 0.01rem solid #f0f3f3;
+            &:last-child
+                border-bottom: none;
+        .rate-star
+            width: .12rem;
+            height: .12rem;
+        .left
+            display: inline-block;
+            vertical-align: top;
+            width: .4rem;
+            height: $icon_size_small;
+            line-height: $icon_size_small;
+            text-align: center;
+            font-size: .2rem;
+            color: #c3baba;
+        .middle
+            width: $icon_size_small;
+            display: inline-block;
+            vertical-align: top;
+            margin-right: .1rem;
+        .right
+            display: inline-block;
+            vertical-align: top;
+            width: calc(100% - 1.2rem)
+        .icon
+            width: $icon_size_small;
+            height: $icon_size_small;
+            border-radius: .12rem;
+            background-size: cover;
+        .name
+            font-size: .14rem;
+            line-height: .14rem;
+            margin: .03rem 0;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+        .category
+            font-size: .12rem;
+            line-height: .12rem;
+            margin: .08rem 0 .08rem 0;
+            color: #d6a1a1;
+        .like
+            height: .12rem;
+            line-height: .12rem;
+        .comment
+            margin-left: .03rem;
