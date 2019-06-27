@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 import LoadingCircle from './LoadingCircle'
 import { App } from '../DataStruct'
 import { getTopN } from '../api/GetApp'
