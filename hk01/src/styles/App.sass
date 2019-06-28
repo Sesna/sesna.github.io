@@ -86,7 +86,6 @@ $icon_size_small: .60rem;
         .app
             padding: .08rem 0;
             border-bottom: 0.01rem solid #f0f3f3;
-            transition: top .4s;
             &:last-child
                 border-bottom: none;
         .rate-star
@@ -135,17 +134,19 @@ $icon_size_small: .60rem;
         .comment
             margin-left: .03rem;
 
-    // 动画
-    .enter, .appear
-        opacity: 0;
-        transform: scale(0.9);
-    .enter-active, .appear-active
-        opacity: 1;
-        transform: translateX(0);
-        transition: opacity 300ms, transform 300ms;
-    .exit
-        opacity: 1;
-    .exit-active
-        opacity: 0;
-        transform: scale(0.9);
-        transition: opacity 300ms, transform 300ms;
+// 动画
+.enter, .appear
+    opacity: 0;
+    transform: scale(0.9);
+.appear-done
+    opacity: 1
+.enter-active, .appear-active
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 300ms, transform 300ms;
+.exit
+    opacity: 1;
+.exit-active
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 300ms, transform 300ms;
