@@ -1,11 +1,17 @@
 import React from "react"
 import SearchIcon from '../icons/search.svg'
-interface BoxState { tip : boolean }
+
+interface State {
+    tip : boolean
+}
+
+interface Props {
+    value    : string,
+    onChange : Function
+}
 
 function SearchTip(tip: boolean) {
-    if(!tip) {
-        return
-    }
+    if(!tip) { return }
     return (
         <div className='tip common-position'>
             <img alt='search-icon' className='search-icon' src={SearchIcon} />
@@ -15,8 +21,8 @@ function SearchTip(tip: boolean) {
 }
 
 export default class SearchBox extends React.Component {
-    state: BoxState = { tip : true }
-    props: { value : string, onChange : Function }
+    state: State = { tip : true }
+    props: Props
     
     constructor(props: object) {
         super(props)
@@ -29,11 +35,7 @@ export default class SearchBox extends React.Component {
     }
     
     handleTip(value: string) {
-        if(!value) {
-            this.setState({ tip : true })
-        } else {
-            this.setState({ tip : false })
-        }
+        this.setState({ tip : value ? false : true })
     }
     
     render() {

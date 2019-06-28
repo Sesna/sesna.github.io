@@ -1,47 +1,42 @@
-import React from "react"
-import { getTopGrossingN } from '../api/GetApp'
+import React from 'react'
 import { App } from '../DataStruct'
 import LoadingBar from './LoadingBar'
-import { fliterData } from '../Util'
-
-const imgStyle = (url: string) => ({
-    backgroundImage : 'url(' + url + ')'
-})
+import { imgStyle } from '../Util'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 function AppGross(props: App) {
-    return (<div className='app' key={props.name}>
-        <div className='icon' style={imgStyle(props.icon)}></div>
-        <p className='name'>{props.name}</p>
-        <p className='category'>{props.category}</p>
-    </div>)
+    return (
+        <CSSTransition  timeout={300} className='app' key={props.name}>
+            <div>
+                <div className='icon' style={imgStyle(props.icon)}></div>
+                <p className='name'>{props.name}</p>
+                <p className='category'>{props.category}</p>
+            </div>
+        </CSSTransition>
+    )
 }
 
 function AppGrossList(list: App[]) {
-    return list.map((item) => AppGross(item))
+    return (
+        <TransitionGroup component={null} appear={true}>
+            {list.map((item) => AppGross(item))}
+        </TransitionGroup>
+    )
 }
 
-interface StateGrossList {
+interface Props {
     loading : boolean,
-    list : App[]
+    list    : App[]
 }
 
-export default class GrossList extends React.Component {
-    props: { keyWord : string }
-    state: StateGrossList = {
-        loading : true,
-        list : []
-    }
-    async componentDidMount() {
-        let data: App[] = await getTopGrossingN(10)
-        this.setState({list : data, loading : false })
-    }
-    render() {
-        return (<div className='gross-list'>
-            <h6 className='title'>推介</h6>
-            <div className='app-list'>
-                {this.state.loading ? <LoadingBar />
-                : AppGrossList(fliterData(this.state.list, this.props.keyWord)) }
-            </div>
-        </div>)
-    }
-}
+const GrossList = (props: Props) => (
+    <div className='gross-list'>
+        <h6 className='title'>推介</h6>
+        <div className='app-list'>
+            {props.loading ? <LoadingBar />
+            : AppGrossList(props.list) }
+        </div>
+    </div>
+)
+
+export default GrossList

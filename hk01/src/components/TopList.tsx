@@ -1,21 +1,10 @@
 import React from 'react'
 import LoadingCircle from './LoadingCircle'
 import { App } from '../DataStruct'
-import { getTopN } from '../api/GetApp'
 import { ReactComponent as Star1 } from '../icons/star_01.svg'
 import { ReactComponent as Star2 } from '../icons/star_02.svg'
 import { imgStyle } from '../Util'
-import { fliterData } from '../Util'
-
-
-interface StateTopList {
-    loading    : boolean,
-    appending  : boolean,
-    start      : number,
-    limit      : number,
-    lastScroll : number,
-    list       : App[]
-}
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 function showStar(starNumber: number) {
     let t = []
@@ -30,35 +19,49 @@ function showStar(starNumber: number) {
 
 function AppTop(props: App, i: number) {
     let cname = 'app' + (i % 2 === 1 ? " circle" : "")
-    return (<div className={cname}  key={props.name}>
-        <div className='left'>{props.rank}</div>
-        <div className='middle'>
-            <div className='icon' style={imgStyle(props.icon)}></div>
-        </div>
-        <div className='right'>
-            <p className='name'>{props.name}</p>
-            <p className='category'>{props.category}</p>
-            <div className='like'>
-                {showStar(props.star)}
-                <span className='comment'>({props.comment})</span>
+    return (
+        <CSSTransition timeout={300} className={cname} key={props.name}>
+            <div>
+                <div className='left'>{props.rank}</div>
+                <div className='middle'>
+                    <div className='icon' style={imgStyle(props.icon)}></div>
+                </div>
+                <div className='right'>
+                    <p className='name'>{props.name}</p>
+                    <p className='category'>{props.category}</p>
+                    <div className='like'>
+                        {showStar(props.star)}
+                        <span className='comment'>({props.comment})</span>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>)
+        </CSSTransition>
+    )
 }
 
 function AppTopList(list: App[]) {
-    return list.map((item, i) => AppTop(item, i))
+    return (
+        <TransitionGroup component={null} appear={true}>
+            {list.map((item, i) => AppTop(item, i))}
+        </TransitionGroup>
+    )
+}
+
+interface State {
+    lastScroll : number
+}
+
+interface Props {
+    list       : App[],
+    loading    : boolean,
+    appending  : boolean,
+    appendData : Function
 }
 
 export default class TopList extends React.Component {
-    props: { keyWord : string }
-    state: StateTopList = {
-        loading    : true,
-        list       : [],
-        start      : 0,
-        limit      : 10,
-        lastScroll : 0,
-        appending  : false
+    props: Props
+    state: State = {
+        lastScroll : 0
     }
 
     constructor(props: object) {
@@ -66,14 +69,8 @@ export default class TopList extends React.Component {
         this.onScroll = this.onScroll.bind(this)
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         let ele = document.querySelector('#scrollable-content')
-        let data: App[] = await getTopN(this.state.start, this.state.limit)
-        this.setState({
-            list    : data,
-            loading : false,
-            start   : this.state.start + this.state.limit
-        })
         ele.addEventListener('scroll', this.onScroll)
     }
 
@@ -101,28 +98,18 @@ export default class TopList extends React.Component {
 
     onScroll() {
         let ele: Element = document.querySelector('#scrollable-content')
-        if(!this.arriveBottom(ele) || this.state.appending) {
+        if(!this.arriveBottom(ele)) {
             return
         }
-        if(this.state.start > 90) {
-            return
-        }
-        this.setState({ appending : true }, async () => {
-            let data: App[] = await getTopN(this.state.start, this.state.limit)
-            this.setState({
-                list      : [...this.state.list, ...data],
-                appending : false,
-                start     : this.state.start + this.state.limit
-            })
-        })
+        this.props.appendData()
     }
 
     render() {
         return (
             <div className='top-list'>
-                {this.state.loading ? <LoadingCircle/>
-                : AppTopList(fliterData(this.state.list, this.props.keyWord))}
-                {this.state.appending && <div className='loader'></div>}
+                {this.props.loading ? <LoadingCircle/>
+                : AppTopList(this.props.list)}
+                {this.props.appending && <div className='loader'></div>}
             </div>
         )
     }

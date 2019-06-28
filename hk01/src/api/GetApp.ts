@@ -12,6 +12,7 @@ function test() {
 }
 
 export async function getTopN(start: number, limit: number): Promise<any> {
+    // console.log('getTopN', start, limit)
     try {
         await test()
         let response: AxiosResponse<any> = await axios.get(urlTopN)
@@ -23,7 +24,7 @@ export async function getTopN(start: number, limit: number): Promise<any> {
 }
 
 const parseTopNData = (data: any, start: number, limit: number): App[] => {
-    // console.log('parseTopNData', data.feed.entry.length)
+    // console.log('parseTopNData', data.feed.entry.length, start, limit)
     let targetData: AppData[] = data.feed.entry.slice(start, start + limit)
     return targetData.map((item: AppData, i: number) => convertOne(item, start + i + 1))
 }
@@ -49,7 +50,7 @@ const convertOne = (item: AppData, rank?: number): App => {
     return t
 }
 
-export async function getTopGrossingN(n: number): Promise<any> {
+export async function getTopGrossingN(): Promise<any> {
     try {
         await test()
         let response: AxiosResponse<any> = await axios.get(urlTopGrossN)

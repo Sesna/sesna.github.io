@@ -1,4 +1,5 @@
 import React from 'react'
+
 const loadingBar = () => (
     <div className="loading-bar">
         <div className="load">loading</div>
