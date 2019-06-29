@@ -22,17 +22,19 @@
     -->
     <title>App Store</title>
     <script>
-        function resetWidth() {
-            // 兼容ie浏览器 document.body.clientWidth
-            var baseWidth = document.documentElement.clientWidth || document.body.clientWidth
-            baseWidth > 540 && (baseWidth = 540)
-            baseWidth < 300 && (baseWidth = 300)
-            document.documentElement.style.fontSize = baseWidth / 360 * 100 + 'px'
-        }
-        resetWidth()
-        window.addEventListener('resize', function () {
+        ;(function() {
+            function resetWidth() {
+                // 兼容ie浏览器 document.body.clientWidth
+                var baseWidth = document.documentElement.clientWidth || document.body.clientWidth
+                baseWidth > 540 && (baseWidth = 540)
+                baseWidth < 300 && (baseWidth = 300)
+                document.documentElement.style.fontSize = baseWidth / 360 * 100 + 'px'
+            }
             resetWidth()
-        })
+            window.addEventListener('resize', function () {
+                resetWidth()
+            })
+        })();
     </script>
 </head>
 
