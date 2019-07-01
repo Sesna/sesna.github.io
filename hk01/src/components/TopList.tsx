@@ -47,70 +47,18 @@ function AppTopList(list: App[]) {
     )
 }
 
-interface State {
-    lastScroll : number
-}
-
 interface Props {
     list       : App[],
     loading    : boolean,
-    appending  : boolean,
-    appendData : Function
+    appending  : boolean
 }
 
-export default class TopList extends React.Component {
-    props: Props
-    state: State = {
-        lastScroll : 0
-    }
+const TopList = (props: Props) => (
+    <div className='top-list'>
+        {props.loading ? <LoadingCircle/>
+        : AppTopList(props.list)}
+        {props.appending && <div className='loader'></div>}
+    </div>
+)
 
-    constructor(props: object) {
-        super(props)
-        this.onScroll = this.onScroll.bind(this)
-    }
-
-    componentDidMount() {
-        let ele = document.querySelector('#scrollable-content')
-        ele.addEventListener('scroll', this.onScroll)
-    }
-
-    componentWillUnmount() {
-        let ele = document.querySelector('#scrollable-content')
-        ele.removeEventListener('scroll', this.onScroll);
-    }
-
-    arriveBottom(ele: Element): boolean {
-        let scrollTop: number    = ele.scrollTop
-        let height: number       = ele.clientHeight
-        let scrollHeight: number = ele.scrollHeight
-        let lastScroll: number   = this.state.lastScroll
-        // console.log('s', ele, scrollHeight - height - scrollTop)
-        this.setState({ lastScroll : scrollTop })
-        // 向上滚动的不用管
-        if(lastScroll > scrollTop) {
-            return false
-        }
-        if(scrollHeight - height - scrollTop < 200) {
-            return true
-        }
-        return false
-    }
-
-    onScroll() {
-        let ele: Element = document.querySelector('#scrollable-content')
-        if(!this.arriveBottom(ele)) {
-            return
-        }
-        this.props.appendData()
-    }
-
-    render() {
-        return (
-            <div className='top-list'>
-                {this.props.loading ? <LoadingCircle/>
-                : AppTopList(this.props.list)}
-                {this.props.appending && <div className='loader'></div>}
-            </div>
-        )
-    }
-}
+export default TopList
